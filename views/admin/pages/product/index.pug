@@ -1,0 +1,105 @@
+extends ../../layouts/default.pug
+include ../../mixins/filter_button.pug
+include ../../mixins/search_text_field.pug
+include ../../mixins/pagination.pug
+include ../../mixins/form_change_multi.pug
+include ../../mixins/alert.pug
+
+block main 
+    +alertSuccess(3000)
+    .card.mb-3
+        .card-header Filter
+        .card-body
+            .row 
+                .col-6 
+                    +filterButton(filterStatus)
+                .col-6 
+                    +searchTextField(search)
+
+    .card.mb-3
+        .card-header Product list
+            .card-body
+                .row 
+                    .col-8 
+                        +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                    .col-4
+                        a(
+                            href = `${prefixAdmin}/products/create`
+                            class = 'btn btn-outline-success'
+                        ) Create new product
+
+                table(
+                    class = 'table table.hover table-sm'
+                    checkbox-multi
+                    )
+                    thead
+                        th 
+                            input(type = 'checkbox' name = 'checkall')
+                        th STT
+                        th Hinh anh 
+                        th Tieu de 
+                        th Gia 
+                        th Vi tri
+                        th Trang thai 
+                        th Hanh dong 
+                    tbody
+                        each item, index in products
+                            tr
+                                td 
+                                    input(type = 'checkbox' name = 'id', value = item.id)
+                                td #{index + 1}
+                                td
+                                    img(src= item.thumbnail 
+                                    alt=item.title width='100px' height='auto')
+                                td #{item.title}
+                                td #{item.price}$
+                                td 
+                                    input(
+                                        type = 'number'
+                                        min = '1'
+                                        name = 'position'
+                                        style = 'width: 60px'
+                                        value = item.position
+                                    )
+                                td 
+                                    - let buttonStatus = item.status == "active" ? "Active" : "Inactive"
+                                    - let classStatus = item.status == "active" ? "badge-success" : "badge-danger"
+                                    a(
+                                        href = 'javascript:;'
+                                        data-status = item.status 
+                                        data-id = item.id 
+                                        class = `badge ${classStatus}`
+                                        button-change-status   
+                                    ) #{buttonStatus}
+                                td 
+                                    a(
+                                        href = `${prefixAdmin}/products/detail/${item.id}`
+                                        class = 'btn btn-secondary btn-sm mr-1'
+                                        data-id = item.id
+                                        ) Detail
+                                    a(
+                                        href = `${prefixAdmin}/products/edit/${item.id}`
+                                        class = 'btn btn-warning btn-sm') Edit
+                                    button(
+                                        class = 'btn btn-danger btn-sm ml-1'
+                                        data-id = item.id
+                                        button-delete
+                                        ) Delete
+    
+    +bottomPagination(pagination)  
+
+    form(
+        action = ''
+        method = 'POST'
+        id = 'form-change-status'
+        data-path = `${prefixAdmin}/products/change-status`
+    ) 
+
+    form(
+        action = ''
+        method = 'POST'
+        id = 'form-delete-item'
+        data-path = `${prefixAdmin}/products/delete`
+    ) 
+
+    script(src = '/admin/js/products.js')

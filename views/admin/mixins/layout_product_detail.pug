@@ -1,0 +1,22 @@
+mixin layoutProductDetail(productTitle)
+    div(
+        class = 'container mt-5'
+        style="max-width: 90rem;"
+        id = 'container-admin-product-detail'
+    )
+        .card.bg-light.mb-3.shadow-lg.p-4.rounded
+            if productTitle
+                .row
+                    h3 The product name is: #{productTitle}
+            .row
+                div(
+                    class = 'card border-light p-3 m-2'
+                    style="width: 100%; background-color:#F5F3FF"
+                )
+                    .row 
+                        .col-md-4
+                            block content1
+                        .col-md-4
+                            block content2
+                        .col-md-4
+                            block content3

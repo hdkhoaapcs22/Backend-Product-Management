@@ -1,0 +1,37 @@
+include ../../layouts/default.pug
+
+block main
+    div(
+        class = 'container mt-5'
+        style="max-width: 90rem;"
+        id = 'container-admin-product-detail'
+    )
+        .card.bg-light.mb-3.shadow-lg.p-4.rounded
+            if product.title
+                .row
+                    h3 The product name is: #{product.title}
+            .row
+                div(
+                    class = 'card border-light p-3 m-2'
+                    style="width: 40%; background-color:#F5F3FF"
+                )
+                    .row 
+                        h4 The basic information
+                            .col-md-4
+                                .py-3 
+                                    p The product's price is: 
+                                        strong #{product.price != null ? product.price : N/A}
+                                    p The product's quantity is: 
+                                        strong #{product.quantity != null ? product.price : N/A}
+                                    p The discount percentage is: 
+                                        strong #{product.discountPercentage != "" ? product.price : N/A}
+                                    
+                            .col-md-4.mx-4
+                                img(
+                                        src = product.thumbnail
+                                        alt = product.title
+                                        style="width: 80%; height: 80%;"
+                                    )
+                            .col-md-4
+                                p The product's description is: 
+                                    strong #{product.description != "" ? product.price : N/A}
